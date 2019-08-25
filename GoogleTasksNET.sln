@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleTasksNET", "GoogleTasksNET\GoogleTasksNET.csproj", "{9159E5EB-4066-4902-BA80-C9A6E68BE0A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{65D97941-566F-4AF9-9BBC-5BE601A945A7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{9159E5EB-4066-4902-BA80-C9A6E68BE0A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9159E5EB-4066-4902-BA80-C9A6E68BE0A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9159E5EB-4066-4902-BA80-C9A6E68BE0A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{65D97941-566F-4AF9-9BBC-5BE601A945A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65D97941-566F-4AF9-9BBC-5BE601A945A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65D97941-566F-4AF9-9BBC-5BE601A945A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65D97941-566F-4AF9-9BBC-5BE601A945A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
