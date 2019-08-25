@@ -20,10 +20,11 @@ namespace GoogleTasksNET
 
         public string ClientID { get; set; }
         public string ClientSecret { get; set; }
+        public string CodeVerifier { get; set; }
 
 
 
-        public async Task<string> AuthenticateAsync(AuthMethod authMethod)
+        public string AuthenticateAsync(AuthMethod authMethod)
         {
             string state = randomDataBase64url(32);
             string code_verifier = randomDataBase64url(32);
@@ -50,6 +51,8 @@ namespace GoogleTasksNET
 
             return authorizationRequest;
         }
+
+        
 
         public static string randomDataBase64url(uint length)
         {
