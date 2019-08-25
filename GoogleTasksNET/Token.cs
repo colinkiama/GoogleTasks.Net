@@ -10,5 +10,22 @@ namespace GoogleTasksNET
         public string RefreshToken { get; set; }
         public DateTime ExpirationDateTimeUTC { get; set; }
         public string GrantType { get; private set; } = "Bearer";
+
+        public Token()
+        {
+
+        }
+
+        public Token(string accessToken, string refreshToken, uint expiresIn)
+        {
+            AccessToken = accessToken;
+            RefreshToken = refreshToken;
+            ExpirationDateTimeUTC = CalculateExpirationTimeFromCurrentTime(expiresIn);
+        }
+
+        private DateTime CalculateExpirationTimeFromCurrentTime(uint expiresIn)
+        {
+            return new DateTime(0);
+        }
     }
 }
