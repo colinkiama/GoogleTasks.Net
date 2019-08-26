@@ -23,15 +23,17 @@ namespace GoogleTasksNET
         }
 
 
-        public async Task<ListResult<GTaskList>> GetTaskLists(string pageToken = "", ulong maxResults = 20)
+        public async Task<ListResult<GTaskList>> GetTaskListsAsync(string pageToken = null, ulong maxResults = 20)
         {
             ListResult<GTaskList> result = null;
 
-            string requestString = $"https://www.googleapis.com/tasks/v1/users/@me/lists" +
-                $"?maxResults={maxResults}&pageToken={pageToken}";
+            string requestString = $"https://www.googleapis.com/tasks/v1/users/@me/lists";
+
+            //string requestString = $"https://www.googleapis.com/tasks/v1/users/@me/lists" +
+            //    $"?maxResults={maxResults}&pageToken={pageToken}";
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestString);
-            request.Headers.Add("Authorization", ClientToken.AccessToken);
+            request.Headers.Add("Authorization", $"{ClientToken.GrantType} {ClientToken.AccessToken}");
 
             var responseMessage = await _client.SendAsync(request);
 

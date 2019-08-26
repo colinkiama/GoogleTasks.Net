@@ -83,7 +83,13 @@ namespace TestApp
 
             if (token != null)
             {
-                userinfoCall(token.AccessToken);
+                //userinfoCall(token.AccessToken);
+                TasksClient client = new TasksClient(clientID, clientSecret, token);
+                var tasksListResult = await client.GetTaskListsAsync();
+                foreach (var item in tasksListResult.items)
+                {
+                    output($"{item.title} Last Updated: {item.updated}");
+                }
             }
             
             
