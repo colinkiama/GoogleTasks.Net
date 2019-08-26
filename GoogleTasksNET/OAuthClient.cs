@@ -53,22 +53,22 @@ namespace GoogleTasksNET
                 case AuthMethod.CustomURIScheme:
                     break;
                 case AuthMethod.Loopback:
-                    //authorizationRequest = string.Format("{0}?response_type=code&scope=openid%20profile%20https://www.googleapis.com/auth/tasks&redirect_uri={1}&client_id={2}&state={3}&code_challenge={4}&code_challenge_method={5}",
-                    //authorizationEndpoint,
-                    //System.Uri.EscapeDataString(RedirectURI),
-                    //ClientID,
-                    //state,
-                    //code_challenge,
-                    //code_challenge_method);
-
-                    // Test Auth Request
-                    authorizationRequest = string.Format("{0}?response_type=code&scope=openid%20profile%20&redirect_uri={1}&client_id={2}&state={3}&code_challenge={4}&code_challenge_method={5}",
+                    authorizationRequest = string.Format("{0}?response_type=code&scope=openid%20profile%20https://www.googleapis.com/auth/tasks&redirect_uri={1}&client_id={2}&state={3}&code_challenge={4}&code_challenge_method={5}",
                     authorizationEndpoint,
                     System.Uri.EscapeDataString(RedirectURI),
                     ClientID,
                     state,
                     code_challenge,
                     code_challenge_method);
+
+                    // Test Auth Request
+                    //authorizationRequest = string.Format("{0}?response_type=code&scope=openid%20profile%20&redirect_uri={1}&client_id={2}&state={3}&code_challenge={4}&code_challenge_method={5}",
+                    //authorizationEndpoint,
+                    //System.Uri.EscapeDataString(RedirectURI),
+                    //ClientID,
+                    //state,
+                    //code_challenge,
+                    //code_challenge_method);
                     break;
 
             }
