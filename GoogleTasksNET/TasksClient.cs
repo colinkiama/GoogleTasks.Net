@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@ namespace GoogleTasksNET
 
         HttpClient _client = new HttpClient();
 
+        const string JsonMediaType = "application/json";
         public TasksClient(string clientID, string clientSecret, Token clientToken)
         {
             ClientID = clientID;
@@ -95,6 +97,28 @@ namespace GoogleTasksNET
             return result;
         }
 
+        public async Task<GTaskList> AddTaskListAsync(GTaskList listToAdd)
+        {
+            GTaskList result = null;
+
+            string requestUrl = "https://www.googleapis.com/tasks/v1/users/@me/lists";
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, requestUrl);
+            AddAuthorizationHeader(request);
+
+            var listJson = new StringContent(JsonConvert.SerializeObject(listToAdd), Encoding.UTF8,
+                JsonMediaType);
+
+            request.Content = listJson;
+            var responseMessage = await _client.SendAsync(request);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string jsonReturned = await responseMessage.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<GTaskList>(jsonReturned);
+            }
+
+            return result;
+        }
 
     }
 }
