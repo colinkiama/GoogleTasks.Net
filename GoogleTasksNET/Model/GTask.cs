@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GoogleTasksNET
+namespace GoogleTasksNET.Model
 {
     public class GTask
     {

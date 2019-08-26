@@ -1,4 +1,5 @@
 ﻿using GoogleTasksNET.Helpers;
+using GoogleTasksNET.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
