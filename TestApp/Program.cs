@@ -92,6 +92,7 @@ namespace TestApp
                 }
 
                 var tasksQuery = new TasksQuery();
+                tasksQuery.DueMin = DateTime.UtcNow.Subtract(TimeSpan.FromDays(30));
                 var tasksResult = await client.GetTasksAsync(tasksListResult.items[0].id, tasksQuery);
 
                 foreach (var item in tasksResult.items)
