@@ -1,7 +1,7 @@
 # GoogleTasks.Net
 A Google Tasks .Net Standard API
 
-Everything in the API has been implemented except Patch methods
+Everything in the API has been implemented except Patch methods (which aren't necessary)
 
 ## References: 
 
