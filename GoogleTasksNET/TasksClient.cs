@@ -25,7 +25,8 @@ namespace GoogleTasksNET
             ClientToken = clientToken;
         }
 
-        
+        // TaskList Methods
+
         public async Task<ListResult<GTaskList>> GetTaskListsAsync(string pageToken = null, ulong maxResults = 20)
         {
             ListResult<GTaskList> result = null;
@@ -43,7 +44,7 @@ namespace GoogleTasksNET
             queries.Add("maxResults", maxResults);
 
             RequestHelper.AddQueriesToRequest(requestBuilder, queries);
-           
+
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestBuilder.ToString());
             RequestHelper.AddAuthorizationHeader(request, ClientToken);
 
@@ -57,7 +58,6 @@ namespace GoogleTasksNET
 
             return result;
         }
-
 
         public async Task<GTaskList> GetTaskListAsync(string taskListID)
         {
@@ -123,7 +123,7 @@ namespace GoogleTasksNET
             return result;
         }
 
-        public async Task<bool> DeleteTaskList(string taskListID)
+        public async Task<bool> DeleteTaskListAsync(string taskListID)
         {
             bool wasTaskDeleted = false;
 
@@ -140,6 +140,26 @@ namespace GoogleTasksNET
 
             return wasTaskDeleted;
         }
+
+
+        // Task Methods
+
+        public async Task<ListResult<GTask>> GetTasksAsync(string taskListID, ulong maxResults = 20, bool showCompleted = true,
+            bool showDeleted = false, bool showHidden = false)
+        {
+            ListResult<GTask> result = null;
+
+            return result;
+        }
+
+        //public async Task<ListResult<GTask>> GetTasksAsync(string taskListID, DateTime completedMax, DateTime b)
+        //{
+
+
+        //}
+
+
+
 
 
     }
