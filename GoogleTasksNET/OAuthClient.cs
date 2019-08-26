@@ -21,13 +21,24 @@ namespace GoogleTasksNET
 
         public string ClientID { get; set; }
         public string ClientSecret { get; set; }
+        public string RedirectURI { get; set; }
+
         public string CodeVerifier { get; set; }
 
         string state = null;
-        string redirectURI = null;
 
+        public OAuthClient()
+        {
 
-        public string AuthenticateAsync(AuthMethod authMethod)
+        }
+
+        public OAuthClient(string clientID, string clientSecret, string redirectURI)
+        {
+            ClientID = clientID;
+            ClientSecret = clientSecret;
+            RedirectURI = redirectURI;
+        }
+        public string GetAuthorizationURL(AuthMethod authMethod)
         {
             state = randomDataBase64url(32);
             string code_verifier = randomDataBase64url(32);
@@ -40,10 +51,9 @@ namespace GoogleTasksNET
                 case AuthMethod.CustomURIScheme:
                     break;
                 case AuthMethod.Loopback:
-                    redirectURI = string.Format("http://{0}:{1}/", IPAddress.Loopback, GetRandomUnusedPort());
-                    authorizationRequest = string.Format("{0}?response_type=code&scope=openid%20profile%20tasks&redirect_uri={1}&client_id={2}&state={3}&code_challenge={4}&code_challenge_method={5}",
+                    authorizationRequest = string.Format("{0}?response_type=code&scope=openid%20profile%20https://www.googleapis.com/auth/tasks&redirect_uri={1}&client_id={2}&state={3}&code_challenge={4}&code_challenge_method={5}",
                     authorizationEndpoint,
-                    System.Uri.EscapeDataString(redirectURI),
+                    System.Uri.EscapeDataString(RedirectURI),
                     ClientID,
                     state,
                     code_challenge,
@@ -73,7 +83,7 @@ namespace GoogleTasksNET
                     Debug.WriteLine($"Authorization code: {code}");
                 }
 
-                tokenToReturn = await GenerateTokenFromCodeExchangeAsync(code, CodeVerifier, redirectURI);
+                tokenToReturn = await GenerateTokenFromCodeExchangeAsync(code, CodeVerifier, RedirectURI);
             }
 
             return tokenToReturn;
@@ -167,14 +177,7 @@ namespace GoogleTasksNET
             return base64;
         }
 
-        private static int GetRandomUnusedPort()
-        {
-            var listener = new TcpListener(IPAddress.Loopback, 0);
-            listener.Start();
-            var port = ((IPEndPoint)listener.LocalEndpoint).Port;
-            listener.Stop();
-            return port;
-        }
+        
 
         private static byte[] sha256(string inputStirng)
         {
