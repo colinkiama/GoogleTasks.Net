@@ -27,12 +27,38 @@ namespace GoogleTasksNET
         {
             ListResult<GTaskList> result = null;
 
-            string requestString = $"https://www.googleapis.com/tasks/v1/users/@me/lists";
+            StringBuilder requestBuilder = new StringBuilder();
+            requestBuilder.Append("https://www.googleapis.com/tasks/v1/users/@me/lists");
+
+            Dictionary<string, object> queries = new Dictionary<string, object>();
+
+            if (pageToken != null)
+            {
+                queries.Add("pageToken", pageToken);
+            }
+
+            queries.Add("maxResults", maxResults);
+
+            var iterator = queries.GetEnumerator();
+            if (queries.Count > 0)
+            {
+                requestBuilder.Append('?');
+
+                foreach (var query in queries)
+                {
+                    requestBuilder.Append($"{query.Key}=");
+                    requestBuilder.Append($"{query.Value}&");
+                }
+
+                requestBuilder.Remove(requestBuilder.Length - 1, 1);
+            }
+
+
 
             //string requestString = $"https://www.googleapis.com/tasks/v1/users/@me/lists" +
             //    $"?maxResults={maxResults}&pageToken={pageToken}";
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestString);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestBuilder.ToString());
             request.Headers.Add("Authorization", $"{ClientToken.GrantType} {ClientToken.AccessToken}");
 
             var responseMessage = await _client.SendAsync(request);
@@ -42,7 +68,7 @@ namespace GoogleTasksNET
                 string jsonReturned = await responseMessage.Content.ReadAsStringAsync();
                 result = JsonConvert.DeserializeObject<ListResult<GTaskList>>(jsonReturned);
             }
-            
+
             return result;
         }
     }
