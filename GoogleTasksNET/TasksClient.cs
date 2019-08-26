@@ -26,6 +26,7 @@ namespace GoogleTasksNET
             ClientToken = clientToken;
         }
 
+
         // TaskList Methods
 
         public async Task<ListResult<GTaskList>> GetTaskListsAsync(string pageToken = null, ulong maxResults = 20)
@@ -141,10 +142,6 @@ namespace GoogleTasksNET
 
             return wasTaskListDeleted;
         }
-
-
-        
-
 
         // Task Methods
 
