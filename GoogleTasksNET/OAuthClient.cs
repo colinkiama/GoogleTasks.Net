@@ -97,7 +97,7 @@ namespace GoogleTasksNET
             Token tokenToReturn = null;
             
             // builds the  request
-            string tokenRequestURI = "https://www.googleapis.com/oauth2/v4/token";
+            string tokenRequestURI = tokenEndpoint;
             string tokenRequestBody = $"client_id={ClientID}&client_secret={ClientSecret}&refresh_token={refreshToken}&grant_type={grantType}";
 
             // sends the request
@@ -160,7 +160,7 @@ namespace GoogleTasksNET
             Token tokenToReturn = null;
 
             // builds the  request
-            string tokenRequestURI = "https://www.googleapis.com/oauth2/v4/token";
+            string tokenRequestURI = tokenEndpoint;
             string tokenRequestBody = string.Format("code={0}&redirect_uri={1}&client_id={2}&code_verifier={3}&client_secret={4}&scope=&grant_type=authorization_code",
                 code,
                 System.Uri.EscapeDataString(redirectURI),
