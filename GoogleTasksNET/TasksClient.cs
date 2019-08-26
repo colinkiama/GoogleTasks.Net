@@ -126,7 +126,7 @@ namespace GoogleTasksNET
 
         public async Task<bool> DeleteTaskListAsync(string taskListID)
         {
-            bool wasTaskDeleted = false;
+            bool wasTaskListDeleted = false;
 
             string requestUrl = $"https://www.googleapis.com/tasks/v1/users/@me/lists/{taskListID}";
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, requestUrl);
@@ -136,11 +136,14 @@ namespace GoogleTasksNET
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                wasTaskDeleted = true;
+                wasTaskListDeleted = true;
             }
 
-            return wasTaskDeleted;
+            return wasTaskListDeleted;
         }
+
+
+        
 
 
         // Task Methods
@@ -209,9 +212,142 @@ namespace GoogleTasksNET
 
         }
 
+        public async Task<GTask> GetTaskAsync(string taskID, string taskListID)
+        {
+            GTask result = null;
+            string requestUrl = $"https://www.googleapis.com/tasks/v1/lists/{taskListID}/tasks/{taskID}";
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+            RequestHelper.AddAuthorizationHeader(request, ClientToken);
+
+            var responseMessage = await _client.SendAsync(request);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string jsonReturned = await responseMessage.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<GTask>(jsonReturned);
+            }
+
+            return result;
+        }
 
 
+        public async Task<GTask> AddTaskAsync(string taskListID, GTask taskToAdd)
+        {
+            GTask result = null;
 
+            string requestUrl = $"https://www.googleapis.com/tasks/v1/lists/{taskListID}/tasks";
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, requestUrl);
+            RequestHelper.AddAuthorizationHeader(request, ClientToken);
+
+            var listJson = new StringContent(JsonConvert.SerializeObject(taskToAdd), Encoding.UTF8,
+                JsonMediaType);
+
+            request.Content = listJson;
+            var responseMessage = await _client.SendAsync(request);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string jsonReturned = await responseMessage.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<GTask>(jsonReturned);
+            }
+
+            return result;
+        }
+
+        public async Task<GTask> UpdateTaskAsync(string taskListID, GTask updatedTask)
+        {
+            GTask result = null;
+
+            string requestUrl = $"https://www.googleapis.com/tasks/v1/lists/{taskListID}/tasks/{updatedTask.id}";
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, requestUrl);
+            RequestHelper.AddAuthorizationHeader(request, ClientToken);
+
+            var listJson = new StringContent(JsonConvert.SerializeObject(updatedTask), Encoding.UTF8,
+                JsonMediaType);
+
+            request.Content = listJson;
+            var responseMessage = await _client.SendAsync(request);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string jsonReturned = await responseMessage.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<GTask>(jsonReturned);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> DeleteTaskAsync(string taskListID, string taskID)
+        {
+            bool wasTaskDeleted = false;
+
+            string requestUrl = $"https://www.googleapis.com/tasks/v1/lists/{taskListID}/tasks/{taskID}";
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, requestUrl);
+            RequestHelper.AddAuthorizationHeader(request, ClientToken);
+
+            var responseMessage = await _client.SendAsync(request);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                wasTaskDeleted = true;
+            }
+
+            return wasTaskDeleted;
+        }
+
+        public async Task<bool> ClearTaskListAsync(string taskListID)
+        {
+            bool wasTaskCleared = false;
+
+            string requestUrl = $"https://www.googleapis.com/tasks/v1/lists/{taskListID}/clear";
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, requestUrl);
+            RequestHelper.AddAuthorizationHeader(request, ClientToken);
+
+            var responseMessage = await _client.SendAsync(request);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                wasTaskCleared = true;
+            }
+
+            return wasTaskCleared;
+        }
+
+
+        public async Task<GTask> MoveTaskAsync(string taskID, string taskListID, string parentID = null, string previousSiblingID = null)
+        {
+            GTask result = null;
+
+            StringBuilder requestBuilder = new StringBuilder();
+            requestBuilder.Append($"https://www.googleapis.com/tasks/v1/lists/{taskListID}/tasks/{taskID}/move");
+
+            Dictionary<string, object> queries = new Dictionary<string, object>();
+
+            if (parentID != null)
+            {
+                queries.Add("parent", parentID);
+            }
+
+            if (previousSiblingID != null)
+            {
+                queries.Add("previous", previousSiblingID);
+            }
+
+            RequestHelper.AddQueriesToRequest(requestBuilder, queries);
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, requestBuilder.ToString());
+            RequestHelper.AddAuthorizationHeader(request, ClientToken);
+
+            var responseMessage = await _client.SendAsync(request);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string jsonReturned = await responseMessage.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<GTask>(jsonReturned);
+            }
+
+            return result;
+        }
 
     }
 }
