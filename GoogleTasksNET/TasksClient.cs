@@ -149,14 +149,64 @@ namespace GoogleTasksNET
         {
             ListResult<GTask> result = null;
 
+            StringBuilder requestBuilder = new StringBuilder();
+            requestBuilder.Append($"https://www.googleapis.com/tasks/v1/lists/{taskListID}/tasks");
+
+            Dictionary<string, object> queries = new Dictionary<string, object>();
+
+            queries.Add("maxResults", maxResults);
+            queries.Add("showCompleted", showCompleted);
+            queries.Add("showDeleted", showDeleted);
+            queries.Add("showHidden", showHidden);
+
+            RequestHelper.AddQueriesToRequest(requestBuilder, queries);
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestBuilder.ToString());
+            RequestHelper.AddAuthorizationHeader(request, ClientToken);
+
+            var responseMessage = await _client.SendAsync(request);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string jsonReturned = await responseMessage.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<ListResult<GTask>>(jsonReturned);
+            }
+
             return result;
         }
 
-        //public async Task<ListResult<GTask>> GetTasksAsync(string taskListID, DateTime completedMax, DateTime b)
-        //{
+        public async Task<ListResult<GTask>> GetTasksAsync(string taskListID, TasksQuery query)
+        {
+            ListResult<GTask> result = null;
 
+            StringBuilder requestBuilder = new StringBuilder();
+            requestBuilder.Append($"https://www.googleapis.com/tasks/v1/lists/{taskListID}/tasks");
 
-        //}
+            Dictionary<string, object> queries = new Dictionary<string, object>();
+
+            queries.Add("maxResults", query.MaxResults);
+            queries.Add("showCompleted", query.ShowCompleted);
+            queries.Add("showDeleted", query.ShowDeleted);
+            queries.Add("showHidden", query.ShowHidden);
+
+            QueryHelper.TryAddToQueries(query, queries);
+
+            RequestHelper.AddQueriesToRequest(requestBuilder, queries);
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestBuilder.ToString());
+            RequestHelper.AddAuthorizationHeader(request, ClientToken);
+
+            var responseMessage = await _client.SendAsync(request);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string jsonReturned = await responseMessage.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<ListResult<GTask>>(jsonReturned);
+            }
+
+            return result;
+
+        }
 
 
 
