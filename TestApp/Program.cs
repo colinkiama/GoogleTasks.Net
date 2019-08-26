@@ -15,13 +15,6 @@ namespace TestApp
 {
     class ProgramOG
     {
-        // client configuration
-        const string clientID = "581786658708-elflankerquo1a6vsckabbhn25hclla0.apps.googleusercontent.com";
-        const string clientSecret = "3f6NggMbPtrmIBpgx-MK2xXK";
-       
-
-
-
         static OAuthClient oAuthClient = null;
         static void Main(string[] args)
         {
@@ -84,7 +77,7 @@ namespace TestApp
             if (token != null)
             {
                 //userinfoCall(token.AccessToken);
-                TasksClient client = new TasksClient(clientID, clientSecret, token);
+                TasksClient client = new TasksClient(APIConstants.ClientID, APIConstants.ClientSecret, token);
                 var tasksListResult = await client.GetTaskListsAsync();
                 foreach (var item in tasksListResult.items)
                 {
