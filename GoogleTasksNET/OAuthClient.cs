@@ -18,6 +18,8 @@ namespace GoogleTasksNET
         const string authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
         const string tokenEndpoint = "https://www.googleapis.com/oauth2/v4/token";
         const string code_challenge_method = "S256";
+        
+
 
         public string ClientID { get; set; }
         public string ClientSecret { get; set; }
@@ -41,8 +43,8 @@ namespace GoogleTasksNET
         public string GetAuthorizationURL(AuthMethod authMethod)
         {
             state = randomDataBase64url(32);
-            string code_verifier = randomDataBase64url(32);
-            string code_challenge = base64urlencodeNoPadding(sha256(code_verifier));
+            CodeVerifier = randomDataBase64url(32);
+            string code_challenge = base64urlencodeNoPadding(sha256(CodeVerifier));
 
             
             string authorizationRequest = null;
@@ -51,7 +53,16 @@ namespace GoogleTasksNET
                 case AuthMethod.CustomURIScheme:
                     break;
                 case AuthMethod.Loopback:
-                    authorizationRequest = string.Format("{0}?response_type=code&scope=openid%20profile%20https://www.googleapis.com/auth/tasks&redirect_uri={1}&client_id={2}&state={3}&code_challenge={4}&code_challenge_method={5}",
+                    //authorizationRequest = string.Format("{0}?response_type=code&scope=openid%20profile%20https://www.googleapis.com/auth/tasks&redirect_uri={1}&client_id={2}&state={3}&code_challenge={4}&code_challenge_method={5}",
+                    //authorizationEndpoint,
+                    //System.Uri.EscapeDataString(RedirectURI),
+                    //ClientID,
+                    //state,
+                    //code_challenge,
+                    //code_challenge_method);
+
+                    // Test Auth Request
+                    authorizationRequest = string.Format("{0}?response_type=code&scope=openid%20profile%20&redirect_uri={1}&client_id={2}&state={3}&code_challenge={4}&code_challenge_method={5}",
                     authorizationEndpoint,
                     System.Uri.EscapeDataString(RedirectURI),
                     ClientID,
