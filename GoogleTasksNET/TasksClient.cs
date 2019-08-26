@@ -39,27 +39,10 @@ namespace GoogleTasksNET
 
             queries.Add("maxResults", maxResults);
 
-            var iterator = queries.GetEnumerator();
-            if (queries.Count > 0)
-            {
-                requestBuilder.Append('?');
-
-                foreach (var query in queries)
-                {
-                    requestBuilder.Append($"{query.Key}=");
-                    requestBuilder.Append($"{query.Value}&");
-                }
-
-                requestBuilder.Remove(requestBuilder.Length - 1, 1);
-            }
-
-
-
-            //string requestString = $"https://www.googleapis.com/tasks/v1/users/@me/lists" +
-            //    $"?maxResults={maxResults}&pageToken={pageToken}";
-
+            AddQueriesToRequest(requestBuilder, queries);
+           
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestBuilder.ToString());
-            request.Headers.Add("Authorization", $"{ClientToken.GrantType} {ClientToken.AccessToken}");
+            AddAuthorizationHeader(request);
 
             var responseMessage = await _client.SendAsync(request);
 
@@ -71,5 +54,47 @@ namespace GoogleTasksNET
 
             return result;
         }
+
+        private void AddAuthorizationHeader(HttpRequestMessage request)
+        {
+            request.Headers.Add("Authorization", $"{ClientToken.GrantType} {ClientToken.AccessToken}");
+        }
+
+        private void AddQueriesToRequest(StringBuilder requestBuilder, Dictionary<string, object> queries)
+        {
+            if (queries.Count > 0)
+            {
+                requestBuilder.Append('?');
+
+                foreach (var query in queries)
+                {
+                    requestBuilder.Append($"{query.Key}=");
+                    requestBuilder.Append($"{query.Value}&");
+                }
+
+                // Removes last '&'
+                requestBuilder.Remove(requestBuilder.Length - 1, 1);
+            }
+        }
+
+        public async Task<GTaskList> GetTaskListAsync(string taskListID)
+        {
+            GTaskList result = null;
+            string requestUrl = $"https://www.googleapis.com/tasks/v1/users/@me/lists/{taskListID}";
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
+            AddAuthorizationHeader(request);
+
+            var responseMessage = await _client.SendAsync(request);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string jsonReturned = await responseMessage.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<GTaskList>(jsonReturned);
+            }
+
+            return result;
+        }
+
+
     }
 }
