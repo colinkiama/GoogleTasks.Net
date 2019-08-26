@@ -54,7 +54,7 @@ namespace TestApp
             output("Listening..");
             http.Start();
 
-            oAuthClient = new OAuthClient(clientID, clientSecret, redirectURI);
+            oAuthClient = new OAuthClient(APIConstants.ClientID, APIConstants.ClientSecret, redirectURI);
 
             string authorizationURL = oAuthClient.GetAuthorizationURL(AuthMethod.Loopback);
 
