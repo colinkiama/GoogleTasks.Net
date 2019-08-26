@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GoogleTasksNET.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -24,7 +25,7 @@ namespace GoogleTasksNET
             ClientToken = clientToken;
         }
 
-
+        
         public async Task<ListResult<GTaskList>> GetTaskListsAsync(string pageToken = null, ulong maxResults = 20)
         {
             ListResult<GTaskList> result = null;
@@ -41,10 +42,10 @@ namespace GoogleTasksNET
 
             queries.Add("maxResults", maxResults);
 
-            AddQueriesToRequest(requestBuilder, queries);
+            RequestHelper.AddQueriesToRequest(requestBuilder, queries);
            
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestBuilder.ToString());
-            AddAuthorizationHeader(request);
+            RequestHelper.AddAuthorizationHeader(request, ClientToken);
 
             var responseMessage = await _client.SendAsync(request);
 
@@ -57,34 +58,13 @@ namespace GoogleTasksNET
             return result;
         }
 
-        private void AddAuthorizationHeader(HttpRequestMessage request)
-        {
-            request.Headers.Add("Authorization", $"{ClientToken.GrantType} {ClientToken.AccessToken}");
-        }
-
-        private void AddQueriesToRequest(StringBuilder requestBuilder, Dictionary<string, object> queries)
-        {
-            if (queries.Count > 0)
-            {
-                requestBuilder.Append('?');
-
-                foreach (var query in queries)
-                {
-                    requestBuilder.Append($"{query.Key}=");
-                    requestBuilder.Append($"{query.Value}&");
-                }
-
-                // Removes last '&'
-                requestBuilder.Remove(requestBuilder.Length - 1, 1);
-            }
-        }
 
         public async Task<GTaskList> GetTaskListAsync(string taskListID)
         {
             GTaskList result = null;
             string requestUrl = $"https://www.googleapis.com/tasks/v1/users/@me/lists/{taskListID}";
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestUrl);
-            AddAuthorizationHeader(request);
+            RequestHelper.AddAuthorizationHeader(request, ClientToken);
 
             var responseMessage = await _client.SendAsync(request);
 
@@ -103,7 +83,7 @@ namespace GoogleTasksNET
 
             string requestUrl = "https://www.googleapis.com/tasks/v1/users/@me/lists";
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, requestUrl);
-            AddAuthorizationHeader(request);
+            RequestHelper.AddAuthorizationHeader(request, ClientToken);
 
             var listJson = new StringContent(JsonConvert.SerializeObject(listToAdd), Encoding.UTF8,
                 JsonMediaType);
@@ -126,7 +106,7 @@ namespace GoogleTasksNET
 
             string requestUrl = $"https://www.googleapis.com/tasks/v1/users/@me/lists/{updatedList.id}";
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, requestUrl);
-            AddAuthorizationHeader(request);
+            RequestHelper.AddAuthorizationHeader(request, ClientToken);
 
             var listJson = new StringContent(JsonConvert.SerializeObject(updatedList), Encoding.UTF8,
                 JsonMediaType);
@@ -142,6 +122,25 @@ namespace GoogleTasksNET
 
             return result;
         }
+
+        public async Task<bool> DeleteTaskList(string taskListID)
+        {
+            bool wasTaskDeleted = false;
+
+            string requestUrl = $"https://www.googleapis.com/tasks/v1/users/@me/lists/{taskListID}";
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, requestUrl);
+            RequestHelper.AddAuthorizationHeader(request, ClientToken);
+
+            var responseMessage = await _client.SendAsync(request);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                wasTaskDeleted = true;
+            }
+
+            return wasTaskDeleted;
+        }
+
 
     }
 }
