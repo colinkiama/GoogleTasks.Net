@@ -120,5 +120,28 @@ namespace GoogleTasksNET
             return result;
         }
 
+        public async Task<GTaskList> UpdateTaskListAsync(GTaskList updatedList)
+        {
+            GTaskList result = null;
+
+            string requestUrl = $"https://www.googleapis.com/tasks/v1/users/@me/lists/{updatedList.id}";
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, requestUrl);
+            AddAuthorizationHeader(request);
+
+            var listJson = new StringContent(JsonConvert.SerializeObject(updatedList), Encoding.UTF8,
+                JsonMediaType);
+
+            request.Content = listJson;
+            var responseMessage = await _client.SendAsync(request);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string jsonReturned = await responseMessage.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<GTaskList>(jsonReturned);
+            }
+
+            return result;
+        }
+
     }
 }
