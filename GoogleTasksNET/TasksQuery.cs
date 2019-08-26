@@ -4,6 +4,10 @@ using System.Text;
 
 namespace GoogleTasksNET
 {
+
+    // DateTime is a struct (so it can't be null) therefore, "DateTime.MinValue" is used
+    // to show that a DateTime hasn't been specified.
+
     public class TasksQuery
     {
         public DateTime CompletedMax { get; set; } = DateTime.MinValue;
