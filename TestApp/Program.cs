@@ -90,6 +90,14 @@ namespace TestApp
                 {
                     output($"{item.title} Last Updated: {item.updated}");
                 }
+
+                var tasksQuery = new TasksQuery();
+                var tasksResult = await client.GetTasksAsync(tasksListResult.items[0].id, tasksQuery);
+
+                foreach (var item in tasksResult.items)
+                {
+                    output($"{item.title}");
+                }
             }
             
             

@@ -10,7 +10,7 @@ namespace GoogleTasksNET
         public DateTime CompletedMin { get; set; } = DateTime.MinValue;
         public DateTime DueMax { get; set; } = DateTime.MinValue;
         public DateTime DueMin { get; set; } = DateTime.MinValue;
-        public long MaxResults { get; set; } = 20;
+        public ulong MaxResults { get; set; } = 20;
         public string PageToken { get; set; } = null;
         public bool ShowCompleted { get; set; } = true;
         public bool ShowDeleted { get; set; } = false;
@@ -22,7 +22,7 @@ namespace GoogleTasksNET
 
         }
 
-        public TasksQuery(long maxResults = 20, string pageToken = null, bool showCompleted = true)
+        public TasksQuery(ulong maxResults = 20, string pageToken = null, bool showCompleted = true)
         {
             MaxResults = maxResults;
             PageToken = pageToken;
