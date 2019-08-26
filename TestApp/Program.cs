@@ -44,8 +44,6 @@ namespace TestApp
 
         private async void doOAuth()
         {
-
-
             // Creates a redirect URI using an available port on the loopback address.
             string redirectURI = string.Format("http://{0}:{1}/", IPAddress.Loopback, GetRandomUnusedPort());
             // Creates an HttpListener to listen for requests on that redirect URI.
@@ -56,7 +54,7 @@ namespace TestApp
 
             oAuthClient = new OAuthClient(APIConstants.ClientID, APIConstants.ClientSecret, redirectURI);
 
-            string authorizationURL = oAuthClient.GetAuthorizationURL(AuthMethod.Loopback);
+            string authorizationURL = oAuthClient.GetAuthorizationURL();
 
             // Opens request in the browser.
             OpenBrowser(authorizationURL);
