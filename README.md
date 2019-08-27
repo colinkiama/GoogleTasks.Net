@@ -1,4 +1,6 @@
 # GoogleTasks.Net
+[![nuget version](https://img.shields.io/nuget/v/GoogleTasks.NET.ColinKiama)](https://www.nuget.org/packages/GoogleTasks.NET.ColinKiama/)
+
 A Google Tasks .Net Standard API
 
 Everything in the API has been implemented except Patch methods (which aren't necessary)
