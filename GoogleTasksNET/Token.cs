@@ -25,7 +25,7 @@ namespace GoogleTasksNET
 
         private DateTime CalculateExpirationTimeFromCurrentTime(uint expiresIn)
         {
-            ExpirationDateTimeUTC = DateTime.UtcNow.Subtract(new TimeSpan(0, 0, (int)expiresIn));
+            ExpirationDateTimeUTC = DateTime.UtcNow.Add(new TimeSpan(0, 0, (int)expiresIn));
             return ExpirationDateTimeUTC;
         }
     }
