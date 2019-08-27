@@ -47,7 +47,7 @@ namespace TestApp
 
             oAuthClient = new OAuthClient(APIConstants.ClientID, APIConstants.ClientSecret, redirectURI);
 
-            string authorizationURL = oAuthClient.GeneratetAuthorizationURL();
+            string authorizationURL = oAuthClient.GenerateAuthorizationURL();
 
             // Opens request in the browser.
             OpenBrowser(authorizationURL);
