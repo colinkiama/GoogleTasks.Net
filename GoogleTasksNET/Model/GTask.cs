@@ -34,6 +34,9 @@ namespace GoogleTasksNET.Model
         [JsonProperty("notes")]
         public string Notes { get; set; }
 
+        /// <summary>
+        /// Either "needsAction" or "completed"
+        /// </summary>
         [JsonProperty("status")]
         public string Status { get; set; }
 
@@ -46,9 +49,19 @@ namespace GoogleTasksNET.Model
         [JsonProperty("deleted")]
         public bool Deleted { get; set; }
 
+        /// <summary>
+        /// Flag indicating whether the task is hidden. 
+        /// This is the case if the task had been marked completed when the 
+        /// task list was last cleared. 
+        /// The default is False. This field is read-only.
+        /// </summary>
         [JsonProperty("hidden")]
         public bool Hidden { get; set; }
 
+
+        /// <summary>
+        /// Collection of links. This collection is read-only.
+        /// </summary>
         [JsonProperty("links")]
         public List<Link> Links { get; set; }
     }

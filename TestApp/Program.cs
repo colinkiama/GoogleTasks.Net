@@ -79,16 +79,16 @@ namespace TestApp
                 //userinfoCall(token.AccessToken);
                 TasksClient client = new TasksClient(APIConstants.ClientID, APIConstants.ClientSecret, token);
                 var tasksListResult = await client.GetTaskListsAsync();
-                foreach (var item in tasksListResult.items)
+                foreach (var item in tasksListResult.Items)
                 {
                     output($"{item.Title} Last Updated: {item.Updated}");
                 }
 
                 var tasksQuery = new TasksQuery();
                 tasksQuery.DueMin = DateTime.UtcNow.Subtract(TimeSpan.FromDays(30));
-                var tasksResult = await client.GetTasksAsync(tasksListResult.items[0].ID, tasksQuery);
+                var tasksResult = await client.GetTasksAsync(tasksListResult.Items[0].ID, tasksQuery);
 
-                foreach (var item in tasksResult.items)
+                foreach (var item in tasksResult.Items)
                 {
                     output($"{item.Title}");
                 }

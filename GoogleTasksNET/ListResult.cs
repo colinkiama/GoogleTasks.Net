@@ -8,15 +8,15 @@ namespace GoogleTasksNET
     public class ListResult<T>
     {
         [JsonProperty("kind")]
-        public string kind { get; set; }
+        public string Kind { get; set; }
 
         [JsonProperty("etag")]
-        public string etag { get; set; }
+        public string ETag { get; set; }
 
         [JsonProperty("nextPageToken")]
-        public string nextPageToken { get; set; }
+        public string NextPageToken { get; set; }
 
         [JsonProperty("items")]
-        public List<T> items { get; set; }
+        public List<T> Items { get; set; }
     }
 }
