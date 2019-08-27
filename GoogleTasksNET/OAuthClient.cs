@@ -125,167 +125,173 @@ namespace GoogleTasksNET
             return tokenToReturn;
         }
 
-    public async Task<Token> RefreshTokenAsync(string refreshToken)
-    {
-        const string grantType = "refresh_token";
-        Token tokenToReturn = null;
-
-        // builds the  request
-        string tokenRequestURI = tokenEndpoint;
-        string tokenRequestBody = $"client_id={ClientID}&client_secret={ClientSecret}&refresh_token={refreshToken}&grant_type={grantType}";
-
-        // sends the request
-        HttpWebRequest tokenRequest = (HttpWebRequest)WebRequest.Create(tokenRequestURI);
-        tokenRequest.Method = "POST";
-        tokenRequest.ContentType = "application/x-www-form-urlencoded";
-
-
-        byte[] _byteVersion = Encoding.ASCII.GetBytes(tokenRequestBody);
-        tokenRequest.ContentLength = _byteVersion.Length;
-        Stream stream = tokenRequest.GetRequestStream();
-        await stream.WriteAsync(_byteVersion, 0, _byteVersion.Length);
-        stream.Close();
-
-        try
+        /// <summary>
+        /// Whenever your token expires or is about to expire, you should use this to obtain 
+        /// a new token
+        /// </summary>
+        /// <param name="refreshToken"></param>
+        /// <returns></returns>
+        public async Task<Token> RefreshTokenAsync(string refreshToken)
         {
-            // gets the response
-            WebResponse tokenResponse = await tokenRequest.GetResponseAsync();
-            using (StreamReader reader = new StreamReader(tokenResponse.GetResponseStream()))
+            const string grantType = "refresh_token";
+            Token tokenToReturn = null;
+
+            // builds the  request
+            string tokenRequestURI = tokenEndpoint;
+            string tokenRequestBody = $"client_id={ClientID}&client_secret={ClientSecret}&refresh_token={refreshToken}&grant_type={grantType}";
+
+            // sends the request
+            HttpWebRequest tokenRequest = (HttpWebRequest)WebRequest.Create(tokenRequestURI);
+            tokenRequest.Method = "POST";
+            tokenRequest.ContentType = "application/x-www-form-urlencoded";
+
+
+            byte[] _byteVersion = Encoding.ASCII.GetBytes(tokenRequestBody);
+            tokenRequest.ContentLength = _byteVersion.Length;
+            Stream stream = tokenRequest.GetRequestStream();
+            await stream.WriteAsync(_byteVersion, 0, _byteVersion.Length);
+            stream.Close();
+
+            try
             {
-                // reads response body
-                string responseText = await reader.ReadToEndAsync();
-                Console.WriteLine(responseText);
-
-                // converts to dictionary
-                Dictionary<string, string> tokenEndpointDecoded = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseText);
-
-                string access_token = tokenEndpointDecoded["access_token"];
-                uint expires_in = uint.Parse(tokenEndpointDecoded["expires_in"]);
-
-                tokenToReturn = new Token(access_token, refreshToken, expires_in);
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                var response = ex.Response as HttpWebResponse;
-                if (response != null)
+                // gets the response
+                WebResponse tokenResponse = await tokenRequest.GetResponseAsync();
+                using (StreamReader reader = new StreamReader(tokenResponse.GetResponseStream()))
                 {
-                    Debug.WriteLine("HTTP: " + response.StatusCode);
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        // reads response body
-                        string responseText = await reader.ReadToEndAsync();
-                        Debug.WriteLine(responseText);
-                    }
+                    // reads response body
+                    string responseText = await reader.ReadToEndAsync();
+                    Console.WriteLine(responseText);
+
+                    // converts to dictionary
+                    Dictionary<string, string> tokenEndpointDecoded = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseText);
+
+                    string access_token = tokenEndpointDecoded["access_token"];
+                    uint expires_in = uint.Parse(tokenEndpointDecoded["expires_in"]);
+
+                    tokenToReturn = new Token(access_token, refreshToken, expires_in);
                 }
-
             }
-        }
-
-        return tokenToReturn;
-
-
-    }
-
-    private async Task<Token> GenerateTokenFromCodeExchangeAsync(string code, string codeVerifier, string redirectURI)
-    {
-        Token tokenToReturn = null;
-
-        // builds the  request
-        string tokenRequestURI = tokenEndpoint;
-        string tokenRequestBody = string.Format("code={0}&redirect_uri={1}&client_id={2}&code_verifier={3}&client_secret={4}&scope=&grant_type=authorization_code",
-            code,
-            System.Uri.EscapeDataString(redirectURI),
-            ClientID,
-            CodeVerifier,
-            ClientSecret
-            );
-
-        // sends the request
-        HttpWebRequest tokenRequest = (HttpWebRequest)WebRequest.Create(tokenRequestURI);
-        tokenRequest.Method = "POST";
-        tokenRequest.ContentType = "application/x-www-form-urlencoded";
-        tokenRequest.Accept = "Accept=text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-        byte[] _byteVersion = Encoding.ASCII.GetBytes(tokenRequestBody);
-        tokenRequest.ContentLength = _byteVersion.Length;
-        Stream stream = tokenRequest.GetRequestStream();
-        await stream.WriteAsync(_byteVersion, 0, _byteVersion.Length);
-        stream.Close();
-
-        try
-        {
-            // gets the response
-            WebResponse tokenResponse = await tokenRequest.GetResponseAsync();
-            using (StreamReader reader = new StreamReader(tokenResponse.GetResponseStream()))
+            catch (WebException ex)
             {
-                // reads response body
-                string responseText = await reader.ReadToEndAsync();
-                Console.WriteLine(responseText);
-
-                // converts to dictionary
-                Dictionary<string, string> tokenEndpointDecoded = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseText);
-
-                string access_token = tokenEndpointDecoded["access_token"];
-                string refresh_token = tokenEndpointDecoded["refresh_token"];
-                uint expires_in = uint.Parse(tokenEndpointDecoded["expires_in"]);
-
-                tokenToReturn = new Token(access_token, refresh_token, expires_in);
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Status == WebExceptionStatus.ProtocolError)
-            {
-                var response = ex.Response as HttpWebResponse;
-                if (response != null)
+                if (ex.Status == WebExceptionStatus.ProtocolError)
                 {
-                    Debug.WriteLine("HTTP: " + response.StatusCode);
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    var response = ex.Response as HttpWebResponse;
+                    if (response != null)
                     {
-                        // reads response body
-                        string responseText = await reader.ReadToEndAsync();
-                        Debug.WriteLine(responseText);
+                        Debug.WriteLine("HTTP: " + response.StatusCode);
+                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                        {
+                            // reads response body
+                            string responseText = await reader.ReadToEndAsync();
+                            Debug.WriteLine(responseText);
+                        }
                     }
-                }
 
+                }
             }
+
+            return tokenToReturn;
+
+
         }
 
-        return tokenToReturn;
+        private async Task<Token> GenerateTokenFromCodeExchangeAsync(string code, string codeVerifier, string redirectURI)
+        {
+            Token tokenToReturn = null;
+
+            // builds the  request
+            string tokenRequestURI = tokenEndpoint;
+            string tokenRequestBody = string.Format("code={0}&redirect_uri={1}&client_id={2}&code_verifier={3}&client_secret={4}&scope=&grant_type=authorization_code",
+                code,
+                System.Uri.EscapeDataString(redirectURI),
+                ClientID,
+                CodeVerifier,
+                ClientSecret
+                );
+
+            // sends the request
+            HttpWebRequest tokenRequest = (HttpWebRequest)WebRequest.Create(tokenRequestURI);
+            tokenRequest.Method = "POST";
+            tokenRequest.ContentType = "application/x-www-form-urlencoded";
+            tokenRequest.Accept = "Accept=text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+            byte[] _byteVersion = Encoding.ASCII.GetBytes(tokenRequestBody);
+            tokenRequest.ContentLength = _byteVersion.Length;
+            Stream stream = tokenRequest.GetRequestStream();
+            await stream.WriteAsync(_byteVersion, 0, _byteVersion.Length);
+            stream.Close();
+
+            try
+            {
+                // gets the response
+                WebResponse tokenResponse = await tokenRequest.GetResponseAsync();
+                using (StreamReader reader = new StreamReader(tokenResponse.GetResponseStream()))
+                {
+                    // reads response body
+                    string responseText = await reader.ReadToEndAsync();
+                    Console.WriteLine(responseText);
+
+                    // converts to dictionary
+                    Dictionary<string, string> tokenEndpointDecoded = JsonConvert.DeserializeObject<Dictionary<string, string>>(responseText);
+
+                    string access_token = tokenEndpointDecoded["access_token"];
+                    string refresh_token = tokenEndpointDecoded["refresh_token"];
+                    uint expires_in = uint.Parse(tokenEndpointDecoded["expires_in"]);
+
+                    tokenToReturn = new Token(access_token, refresh_token, expires_in);
+                }
+            }
+            catch (WebException ex)
+            {
+                if (ex.Status == WebExceptionStatus.ProtocolError)
+                {
+                    var response = ex.Response as HttpWebResponse;
+                    if (response != null)
+                    {
+                        Debug.WriteLine("HTTP: " + response.StatusCode);
+                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                        {
+                            // reads response body
+                            string responseText = await reader.ReadToEndAsync();
+                            Debug.WriteLine(responseText);
+                        }
+                    }
+
+                }
+            }
+
+            return tokenToReturn;
+        }
+
+        private string randomDataBase64url(uint length)
+        {
+            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            byte[] bytes = new byte[length];
+            rng.GetBytes(bytes);
+            return base64urlencodeNoPadding(bytes);
+        }
+
+        private string base64urlencodeNoPadding(byte[] buffer)
+        {
+            string base64 = Convert.ToBase64String(buffer);
+
+            // Converts base64 to base64url.
+            base64 = base64.Replace("+", "-");
+            base64 = base64.Replace("/", "_");
+            // Strips padding.
+            base64 = base64.Replace("=", "");
+
+            return base64;
+        }
+
+
+
+        private static byte[] sha256(string inputStirng)
+        {
+            byte[] bytes = Encoding.ASCII.GetBytes(inputStirng);
+            SHA256Managed sha256 = new SHA256Managed();
+            return sha256.ComputeHash(bytes);
+        }
     }
-
-    private string randomDataBase64url(uint length)
-    {
-        RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-        byte[] bytes = new byte[length];
-        rng.GetBytes(bytes);
-        return base64urlencodeNoPadding(bytes);
-    }
-
-    private string base64urlencodeNoPadding(byte[] buffer)
-    {
-        string base64 = Convert.ToBase64String(buffer);
-
-        // Converts base64 to base64url.
-        base64 = base64.Replace("+", "-");
-        base64 = base64.Replace("/", "_");
-        // Strips padding.
-        base64 = base64.Replace("=", "");
-
-        return base64;
-    }
-
-
-
-    private static byte[] sha256(string inputStirng)
-    {
-        byte[] bytes = Encoding.ASCII.GetBytes(inputStirng);
-        SHA256Managed sha256 = new SHA256Managed();
-        return sha256.ComputeHash(bytes);
-    }
-}
 
 
 }
