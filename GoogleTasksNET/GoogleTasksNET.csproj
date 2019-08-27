@@ -4,11 +4,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Colin Kiama</Authors>
     <Company />
-    <PackageId>GoogleTasks.NET</PackageId>
+    <PackageId>GoogleTasks.NET.ColinKiama</PackageId>
     <Description>A .Net Standard Google Tasks API</Description>
     <PackageProjectUrl>https://github.com/colinkiama/GoogleTasks.Net</PackageProjectUrl>
     <PackageTags>google tasks .net standard dotnet dot net api</PackageTags>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="LICENSE.txt">
+    <None Include="..\LICENSE.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
