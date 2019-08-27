@@ -2,10 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Colin Kiama</Authors>
+    <Company />
+    <PackageId>GoogleTasks.NET</PackageId>
+    <Description>A .Net Standard Google Tasks API</Description>
+    <PackageProjectUrl>https://github.com/colinkiama/GoogleTasks.Net</PackageProjectUrl>
+    <PackageTags>google tasks .net standard dotnet dot net api</PackageTags>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
