@@ -8,21 +8,21 @@ namespace GoogleTasksNET.Model
     public class GTaskList
     {
         [JsonProperty("kind")]
-        public string kind { get; set; }
+        public string Kind { get; set; }
 
         [JsonProperty("id")]
-        public string id { get; set; }
+        public string ID { get; set; }
 
         [JsonProperty("etag")]
-        public string etag { get; set; }
+        public string ETag { get; set; }
 
         [JsonProperty("title")]
-        public string title { get; set; }
+        public string Title { get; set; }
 
         [JsonProperty("updated")]
-        public DateTime updated { get; set; }
+        public DateTime Updated { get; set; }
 
         [JsonProperty("selfLink")]
-        public string selfLink { get; set; }
+        public string SelfLink { get; set; }
     }
 }

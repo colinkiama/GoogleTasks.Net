@@ -8,61 +8,61 @@ namespace GoogleTasksNET.Model
     public class GTask
     {
         [JsonProperty("kind")]
-        public string kind { get; set; }
+        public string Kind { get; set; }
 
         [JsonProperty("id")]
-        public string id { get; set; }
+        public string ID { get; set; }
 
         [JsonProperty("etag")]
-        public string etag { get; set; }
+        public string ETag { get; set; }
 
         [JsonProperty("title")]
-        public string title { get; set; }
+        public string Title { get; set; }
 
         [JsonProperty("updated")]
-        public DateTime updated { get; set; }
+        public DateTime Updated { get; set; }
 
         [JsonProperty("selfLink")]
-        public string selfLink { get; set; }
+        public string SelfLink { get; set; }
 
         [JsonProperty("parent")]
-        public string parent { get; set; }
+        public string Parent { get; set; }
 
         [JsonProperty("position")]
-        public string position { get; set; }
+        public string Position { get; set; }
 
         [JsonProperty("notes")]
-        public string notes { get; set; }
+        public string Notes { get; set; }
 
         [JsonProperty("status")]
-        public string status { get; set; }
+        public string Status { get; set; }
 
         [JsonProperty("due")]
-        public DateTime due { get; set; }
+        public DateTime Due { get; set; }
 
         [JsonProperty("completed")]
-        public DateTime completed { get; set; }
+        public DateTime Completed { get; set; }
 
         [JsonProperty("deleted")]
-        public bool deleted { get; set; }
+        public bool Deleted { get; set; }
 
         [JsonProperty("hidden")]
-        public bool hidden { get; set; }
+        public bool Hidden { get; set; }
 
         [JsonProperty("links")]
-        public List<Link> links { get; set; }
+        public List<Link> Links { get; set; }
     }
 
     public class Link
     {
         [JsonProperty("type")]
-        public string type { get; set; }
+        public string LinkType { get; set; }
 
         [JsonProperty("description")]
-        public string description { get; set; }
+        public string Description { get; set; }
 
         [JsonProperty("link")]
-        public string link { get; set; }
+        public string LinkContent { get; set; }
     }
 
 }

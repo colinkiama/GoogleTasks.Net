@@ -81,16 +81,16 @@ namespace TestApp
                 var tasksListResult = await client.GetTaskListsAsync();
                 foreach (var item in tasksListResult.items)
                 {
-                    output($"{item.title} Last Updated: {item.updated}");
+                    output($"{item.Title} Last Updated: {item.Updated}");
                 }
 
                 var tasksQuery = new TasksQuery();
                 tasksQuery.DueMin = DateTime.UtcNow.Subtract(TimeSpan.FromDays(30));
-                var tasksResult = await client.GetTasksAsync(tasksListResult.items[0].id, tasksQuery);
+                var tasksResult = await client.GetTasksAsync(tasksListResult.items[0].ID, tasksQuery);
 
                 foreach (var item in tasksResult.items)
                 {
-                    output($"{item.title}");
+                    output($"{item.Title}");
                 }
             }
             

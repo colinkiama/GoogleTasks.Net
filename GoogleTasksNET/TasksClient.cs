@@ -106,7 +106,7 @@ namespace GoogleTasksNET
         {
             GTaskList result = null;
 
-            string requestUrl = $"https://www.googleapis.com/tasks/v1/users/@me/lists/{updatedList.id}";
+            string requestUrl = $"https://www.googleapis.com/tasks/v1/users/@me/lists/{updatedList.ID}";
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, requestUrl);
             RequestHelper.AddAuthorizationHeader(request, ClientToken);
 
@@ -255,7 +255,7 @@ namespace GoogleTasksNET
         {
             GTask result = null;
 
-            string requestUrl = $"https://www.googleapis.com/tasks/v1/lists/{taskListID}/tasks/{updatedTask.id}";
+            string requestUrl = $"https://www.googleapis.com/tasks/v1/lists/{taskListID}/tasks/{updatedTask.ID}";
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, requestUrl);
             RequestHelper.AddAuthorizationHeader(request, ClientToken);
 
