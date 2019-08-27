@@ -47,7 +47,7 @@ namespace TestApp
 
             oAuthClient = new OAuthClient(APIConstants.ClientID, APIConstants.ClientSecret, redirectURI);
 
-            string authorizationURL = oAuthClient.GetAuthorizationURL();
+            string authorizationURL = oAuthClient.GeneratetAuthorizationURL();
 
             // Opens request in the browser.
             OpenBrowser(authorizationURL);
@@ -72,7 +72,7 @@ namespace TestApp
             });
 
 
-            Token token = await oAuthClient.FinishOauthAsync(context.Request.QueryString);
+            Token token = await oAuthClient.FinishOAuthAsync(context.Request.QueryString);
 
             if (token != null)
             {

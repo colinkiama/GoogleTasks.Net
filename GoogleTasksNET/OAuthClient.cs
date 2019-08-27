@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Collections.Specialized;
+using Newtonsoft.Json.Linq;
 
 namespace GoogleTasksNET
 {
@@ -46,7 +47,9 @@ namespace GoogleTasksNET
             ClientSecret = clientSecret;
             RedirectURI = redirectURI;
         }
-        public string GetAuthorizationURL()
+
+
+        public string GeneratetAuthorizationURL()
         {
             state = randomDataBase64url(32);
             CodeVerifier = randomDataBase64url(32);
@@ -67,7 +70,7 @@ namespace GoogleTasksNET
         }
 
 
-        public async Task<Token> FinishOauthAsync(NameValueCollection queryString)
+        public async Task<Token> FinishOAuthAsync(NameValueCollection queryString)
         {
             Token tokenToReturn = null;
             if (queryString.Get("error") == null)
@@ -90,6 +93,34 @@ namespace GoogleTasksNET
             return tokenToReturn;
         }
 
+        public async Task<Token> FinishOAuthAsync(string oauthResponseContent)
+        {
+            Token tokenToReturn = null;
+
+            JObject jsonResponse = JObject.Parse(oauthResponseContent);
+
+            bool isError = jsonResponse.TryGetValue("error", out JToken errorToken);
+
+            if (!isError)
+            {
+                string code = (string)jsonResponse["code"];
+                string incomingState = (string)jsonResponse["state"];
+
+                if (incomingState != state)
+                {
+                    Debug.WriteLine($"Received request with invalid state ({incomingState})");
+                }
+                else
+                {
+                    Debug.WriteLine($"Authorization code: {code}");
+                }
+
+                tokenToReturn = await GenerateTokenFromCodeExchangeAsync(code, CodeVerifier, RedirectURI);
+
+            }
+
+            return tokenToReturn;
+        }
 
         public async Task<Token> RefreshTokenAsync(string refreshToken)
         {
