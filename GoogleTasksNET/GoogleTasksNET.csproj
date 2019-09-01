@@ -10,6 +10,8 @@
     <PackageTags>google tasks .net standard dotnet dot net api</PackageTags>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Version>1.0.1</Version>
+    <PackageReleaseNotes>It's now more obvious that "ClientSecret" is an optional value</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
