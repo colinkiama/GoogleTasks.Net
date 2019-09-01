@@ -84,9 +84,11 @@ namespace TestApp
                     output($"{item.Title} Last Updated: {item.Updated}");
                 }
 
-                var tasksQuery = new TasksQuery();
-                tasksQuery.DueMin = DateTime.UtcNow.Subtract(TimeSpan.FromDays(30));
-                var tasksResult = await client.GetTasksAsync(tasksListResult.Items[0].ID, tasksQuery);
+                //var tasksQuery = new TasksQuery();
+                //tasksQuery.DueMin = DateTime.UtcNow.Subtract(TimeSpan.FromDays(30));
+                //var tasksResult = await client.GetTasksAsync(tasksListResult.Items[0].ID, tasksQuery);
+
+                var tasksResult = await client.GetTasksAsync(tasksListResult.Items[0].ID);
 
                 foreach (var item in tasksResult.Items)
                 {
