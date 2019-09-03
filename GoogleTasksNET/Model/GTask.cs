@@ -66,7 +66,7 @@ namespace GoogleTasksNET.Model
 
         private string _notes;
         [JsonProperty("notes")]
-        public string Notes { get { return _notes; } set { NotifyPropertyChanged(); } }
+        public string Notes { get { return _notes; } set { _notes = value; NotifyPropertyChanged(); } }
 
 
         private string _status;
