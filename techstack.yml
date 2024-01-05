@@ -1,7 +1,8 @@
 repo_name: colinkiama/GoogleTasks.Net
 report_id: 06431cb62774bc544978dd5e83065d78
+version: 0.1
 repo_type: Public
-timestamp: '2023-11-12T07:11:58+00:00'
+timestamp: '2024-01-05T08:49:43+00:00'
 requested_by: colinkiama
 provider: github
 branch: master
@@ -16,6 +17,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1015/1200px-C_Sharp_wordmark.svg.png
+  detection_source_url: https://github.com/colinkiama/GoogleTasks.Net
   detection_source: Repo Metadata
 - name: ".NET"
   description: A free, cross-platform, open source developer platform for building
@@ -27,6 +29,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Frameworks (Full Stack)
   image_url: https://img.stackshare.io/service/1014/IoPy1dce_400x400.png
+  detection_source_url: https://github.com/colinkiama/GoogleTasks.Net/blob/master/TestApp/TestApp.csproj
   detection_source: TestApp/TestApp.csproj
   last_updated_by: Colin Kiama
   last_updated_on: 2019-08-25 16:23:05.000000000 Z
@@ -41,7 +44,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Frameworks (Full Stack)
   image_url: https://img.stackshare.io/service/6403/default_91fc1f0ee315262794273aa1387eaf8fed8436e6.png
-  detection_source_url: TestApp/TestApp.csproj
+  detection_source_url: https://github.com/colinkiama/GoogleTasks.Net/blob/master/TestApp/TestApp.csproj
   detection_source: TestApp/TestApp.csproj
   last_updated_by: Colin Kiama
   last_updated_on: 2019-08-25 16:23:05.000000000 Z
@@ -56,7 +59,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Frameworks (Full Stack)
   image_url: https://img.stackshare.io/service/11331/asp.net-core.png
-  detection_source_url: GoogleTasksNET/GoogleTasksNET.csproj
+  detection_source_url: https://github.com/colinkiama/GoogleTasks.Net/blob/master/GoogleTasksNET/GoogleTasksNET.csproj
   detection_source: TestApp/TestApp.csproj
   last_updated_by: Colin Kiama
   last_updated_on: 2019-08-25 16:23:05.000000000 Z
@@ -68,6 +71,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/colinkiama/GoogleTasks.Net
   detection_source: Repo Metadata
 - name: NuGet
   description: The package manager for .NET
@@ -77,6 +81,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/service/2637/6I3oEOP4_400x400.jpg
+  detection_source_url: https://github.com/colinkiama/GoogleTasks.Net/blob/master/TestApp/TestApp.csproj
   detection_source: TestApp/TestApp.csproj
   last_updated_by: Colin Kiama
   last_updated_on: 2019-08-25 16:23:05.000000000 Z
@@ -89,6 +94,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Integrated Development Environment
   image_url: https://img.stackshare.io/service/1451/SR2hUhQN.png
+  detection_source_url: https://github.com/colinkiama/GoogleTasks.Net/blob/master/GoogleTasksNET.sln
   detection_source: GoogleTasksNET.sln
   last_updated_by: Colin Kiama
   last_updated_on: 2019-08-25 13:12:00.000000000 Z
@@ -102,13 +108,19 @@ tools:
   category: Libraries
   sub_category: NuGet Packages
   image_url: https://img.stackshare.io/package/nuget/image.png
-  detection_source_url: TestApp/TestApp.csproj
+  detection_source_url: https://github.com/colinkiama/GoogleTasks.Net/blob/master/TestApp/TestApp.csproj
   detection_source: TestApp/TestApp.csproj
   last_updated_by: Colin Kiama
   last_updated_on: 2019-08-25 16:23:05.000000000 Z
   vulnerabilities:
-  - name: Improper Handling of Exceptional Conditions in Newtonsoft.Json
+  - name: 'Duplicate Advisory: Improper Handling of Exceptional Conditions in Newtonsoft.Json'
     cve_id: 
+    cve_url: https://github.com/advisories/GHSA-8rfx-6mr3-5jh3
+    detected_date: Jan 4
+    severity: high
+    first_patched: 13.0.1
+  - name: Improper Handling of Exceptional Conditions in Newtonsoft.Json
+    cve_id: CVE-2024-21907
     cve_url: https://github.com/advisories/GHSA-5crp-9r3c-p9vr
     detected_date: Jun 23
     severity: high
